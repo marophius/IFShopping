@@ -1,12 +1,18 @@
 version: '3.4'
 
 services:
+  
+  discountdb:
+    image: postgres
 
   catalogdb:
     image: mongo
   
   basketdb:
     image: redis
+
+  pgadmin:
+    image: dpage/pgadmin4
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -20,6 +26,14 @@ services:
       context: .
       dockerfile: src/Services/Basket/Basket.Api/Dockerfile
 
+  discount.grpc:
+    image: ${DOCKER_REGISTRY-}discountgrpc
+    build:
+      context: .
+      dockerfile: src/Services/Discount/Discount.GRPC/Dockerfile
+
 volumes:
   mongo_data:
+  postgres_data:
+  pgadmin_data:
 
