@@ -22,6 +22,13 @@ namespace Discount.GRPC.Services
         {
             var query = new GetDiscountQuery(request.ProductName);
             var result = await _mediator.Send(query);
+
+            if(result is null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound,
+                $"Discount with the product name = {request.ProductName} not found"));
+            }
+
             _logger.LogInformation($"Discount is retrieved for the Product Name: {request.ProductName} and Amount : {result.Amount}");
             return result.ToCouponModel();
         }

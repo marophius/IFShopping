@@ -26,7 +26,7 @@ namespace Basket.Api
             });
             services.AddHealthChecks()
                 .AddRedis(Configuration["CacheSettings:ConnectionString"], "Redis Heath", HealthStatus.Degraded);
-            services.AddApplication();
+            services.AddApplication(Configuration);
             services.AddInfrastructure();
             services.AddApiVersioning();
             services.AddStackExchangeRedisCache(options =>
