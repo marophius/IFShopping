@@ -19,16 +19,18 @@ namespace Basket.Api.Controllers
         private readonly IMediator _mediator;
         private readonly ILogger<BasketController> _logger;
         private readonly DiscountGrpcService _discountGrpcService;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         public BasketController(
             IMediator mediator, 
             ILogger<BasketController> logger,
-            DiscountGrpcService discountGrpcService
-            )
+            DiscountGrpcService discountGrpcService,
+            IPublishEndpoint publishEndpoint)
         {
             _mediator = mediator;
             _logger = logger;
             _discountGrpcService = discountGrpcService;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
@@ -54,8 +56,7 @@ namespace Basket.Api.Controllers
             return Ok(basket);
         }
 
-        [HttpDelete]
-        [Route("[action]/{userName}", Name = "DeleteBasketByUserName")]
+        [HttpDelete("[action]/{userName}", Name = "DeleteBasketByUserName")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<ShoppingCartResponse>> DeleteBasket(string userName)
         {
@@ -63,8 +64,7 @@ namespace Basket.Api.Controllers
             return Ok(await _mediator.Send(query));
         }
 
-        [Route("[action]")]
-        [HttpPost]
+        [HttpPost("[action]")]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
@@ -79,6 +79,7 @@ namespace Basket.Api.Controllers
 
             var eventMesg = basketCheckout.ToBasketCheckoutEvent();
             eventMesg.TotalPrice = basket.TotalPrice;
+            await _publishEndpoint.Publish(eventMesg);
             var deleteQuery = new DeleteBasketByUserNameCommand(basketCheckout.UserName);
             await _mediator.Send(deleteQuery);
             return Accepted();

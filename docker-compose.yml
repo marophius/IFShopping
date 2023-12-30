@@ -11,8 +11,14 @@ services:
   basketdb:
     image: redis
 
+  orderdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
   pgadmin:
     image: dpage/pgadmin4
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -32,8 +38,15 @@ services:
       context: .
       dockerfile: src/Services/Discount/Discount.GRPC/Dockerfile
 
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Orderin.API/Dockerfile
+
 volumes:
   mongo_data:
   postgres_data:
   pgadmin_data:
+
 
