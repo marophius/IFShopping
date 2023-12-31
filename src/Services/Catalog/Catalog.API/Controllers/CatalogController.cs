@@ -12,8 +12,6 @@ using System.Net;
 
 namespace Catalog.API.Controllers
 {
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
     public class CatalogController : ApiController
     {
         private readonly IMediator _mediator;

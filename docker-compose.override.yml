@@ -57,12 +57,13 @@ services:
         - "1433:1433" 
 
   catalog.api:
+    container_name: catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
       - "DatabaseSettings:DatabaseName=CatalogDb"
-      - "DatabaseSettings:CollectionName=Products"
+      - "DatabaseSettings:ProductsCollection=Products"
       - "DatabaseSettings:BrandsCollection=Brands"
       - "DatabaseSettings:TypesCollection=Types"
     depends_on:
@@ -71,6 +72,7 @@ services:
       - "9000:8080"
 
   basket.api:
+    container_name: basket.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -95,16 +97,33 @@ services:
       - discountdb
 
   ordering.api:
+    container_name: ordering.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - "ConnectionStrings:OrderingConnectionString=Server=orderdb,1433;Database=OrderDb;User Id=sa;Password=SwN12345678;TrustServerCertificate=true"
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
-      - "CorsPolicy:OcelotApiGwUrl=http://ocelotapigw:8080"
     ports:
       - "9003:8080"
     depends_on:
       - orderdb
+      - rabbitmq
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+
+  ocelot.apigateway:
+    container_name: ocelot.apigateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    depends_on:
+#      - identityserver
+      - catalog.api
+      - basket.api
+      - discount.grpc
+      - ordering.api
+    ports:
+      - "9010:8080" 
+
