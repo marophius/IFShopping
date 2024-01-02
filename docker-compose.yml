@@ -52,10 +52,17 @@ services:
       context: .
       dockerfile: src/ApiGateways/Ocelot.ApiGateway/Dockerfile
 
+  ifshopping.identity:
+    image: ${DOCKER_REGISTRY-}ifshoppingidentity
+    build:
+      context: .
+      dockerfile: src/Infrastructure/IFShopping.Identity/Dockerfile
+
 volumes:
   mongo_data:
   postgres_data:
   pgadmin_data:
+
 
 
 

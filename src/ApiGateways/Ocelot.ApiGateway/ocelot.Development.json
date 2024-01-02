@@ -101,18 +101,18 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/Basket/CreateBasket",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "basket.api",
-          "Port": "8080"
+          "Port": "8081"
         }
       ],
       "UpstreamPathTemplate": "/Basket/CreateBasket",
-      "UpstreamHttpMethod": [ "POST" ]
-      //      "AuthenticationOptions": {
-      //        "AuthenticationProviderKey": "EShoppingGatewayAuthScheme"
-      //      }
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IFShoppingGatewayAuthScheme"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/v1/Basket/Checkout",
@@ -192,6 +192,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5010"
+    "BaseUrl": "https://localhost:9010"
   }
 }

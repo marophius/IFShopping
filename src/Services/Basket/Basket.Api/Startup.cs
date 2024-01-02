@@ -2,7 +2,10 @@
 using Basket.Infrastructure;
 using HealthChecks.UI.Client;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 namespace Basket.Api
@@ -18,7 +21,7 @@ namespace Basket.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
@@ -41,6 +44,17 @@ namespace Basket.Api
                     cfg.Host(Configuration["EventBusSettings:HostAddress"]);
                 });
             });
+            var userPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+            services.AddControllers(config => config.Filters.Add(new AuthorizeFilter(userPolicy)));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://localhost:9009";
+                    options.Audience = "Basket";
+                });
+            
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment env)
@@ -53,7 +67,7 @@ namespace Basket.Api
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
