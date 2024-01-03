@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using Serilog;
 namespace Basket.Api
 {
     public class Startup
@@ -65,7 +66,6 @@ namespace Basket.Api
                 app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -76,7 +76,6 @@ namespace Basket.Api
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
-
             app.Run();
         }
     }
