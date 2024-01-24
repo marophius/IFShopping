@@ -9,7 +9,11 @@ using Ordering.API;
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Data;
+using Common.Logging;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog(Logging.configureLogger);
 var startup = new Startup(builder.Configuration);
 startup.ConfigureServices(builder.Services);
 

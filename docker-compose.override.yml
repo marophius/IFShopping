@@ -66,8 +66,10 @@ services:
       - "DatabaseSettings:ProductsCollection=Products"
       - "DatabaseSettings:BrandsCollection=Brands"
       - "DatabaseSettings:TypesCollection=Types"
+      - "ElasticConfiguration:Uri=http://elasticsearch:9200"
     depends_on:
       - catalogdb
+      - elasticsearch 
     ports:
       - "9000:8080"
 
@@ -79,8 +81,10 @@ services:
       - "CacheSettings:ConnectionString=basketdb:6379"
       - "GrpcSettings:DiscountUrl=http://discount.grpc:8080"
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "ElasticConfiguration:Uri=http://elasticsearch:9200" 
     depends_on:
       - basketdb
+      - elasticsearch 
     ports:
       - "9001:8080"
 
@@ -91,10 +95,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - "DatabaseSettings:ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
+      - "ElasticConfiguration:Uri=http://elasticsearch:9200" 
     ports:
       - "9002:8080"
     depends_on: 
       - discountdb
+      - elasticsearch 
 
   ordering.api:
     container_name: ordering.api
@@ -103,11 +109,13 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - "ConnectionStrings:OrderingConnectionString=Server=orderdb,1433;Database=OrderDb;User Id=sa;Password=SwN12345678;TrustServerCertificate=true"
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "ElasticConfiguration:Uri=http://elasticsearch:9200" 
     ports:
       - "9003:8080"
     depends_on:
       - orderdb
       - rabbitmq
+      - elasticsearch
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -128,13 +136,46 @@ services:
       - "9010:8080" 
 
 
-  ifshopping.identity:
+  # ifshopping.identity:
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ASPNETCORE_URLS=https://+:443;http://+:80
+  #   ports:
+  #     - "8011:80"
+  #     - "9011:443"
+  #   volumes:
+  #     - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  #     - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  # yarp.apigateway:
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ASPNETCORE_HTTP_PORTS=8080
+  #     - ASPNETCORE_HTTPS_PORTS=8081
+  #   ports:
+  #     - "8080"
+  #     - "8081"
+  #   volumes:
+  #     - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+  #     - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  elasticsearch:
+    container_name: elasticsearch
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
     ports:
-      - "8011:80"
-      - "9011:443"
+      - "9200:9200"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+  kibana:
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"      

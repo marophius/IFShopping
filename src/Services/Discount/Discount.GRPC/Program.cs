@@ -4,8 +4,11 @@ using Discount.GRPC.Extensions;
 using Discount.Infrastructure;
 using Discount.Application;
 using Discount.GRPC.Services;
+using Serilog;
+using Common.Logging;
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog(Logging.configureLogger);
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddInfrastructure();
