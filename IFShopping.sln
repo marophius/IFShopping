@@ -81,7 +81,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{0779E8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Logging", "src\Infrastructure\Common.Logging\Common.Logging.csproj", "{9929B469-8371-47A6-B7ED-3BBBA1F9C1EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarp.ApiGateway", "src\ApiGateways\Yarp.ApiGateway\Yarp.ApiGateway.csproj", "{F29F325E-5A19-4135-AB1E-3FF64A1DFF0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yarp.ApiGateway", "src\ApiGateways\Yarp.ApiGateway\Yarp.ApiGateway.csproj", "{F29F325E-5A19-4135-AB1E-3FF64A1DFF0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -18,22 +18,32 @@ var userPolicy = new AuthorizationPolicyBuilder()
                 .Build();
 var authScheme = "IFShoppingGatewayAuthScheme";
 builder.Services.AddControllers(config => config.Filters.Add(new AuthorizeFilter(userPolicy)));
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(authScheme,options =>
-    {
-        options.Authority = "https://localhost:9009";
-        options.Audience = "IFShopping";
-    });
-builder.Services.AddAuthorization(options =>
+builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CanRead", policy => policy.RequireClaim("scope", "catalogapi.read"));
+    options.AddPolicy("Local", policy =>
+    {
+        policy.AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:4200");
+    });
 });
+
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(authScheme,options =>
+//    {
+//        options.Authority = "https://localhost:9009";
+//        options.Audience = "IFShopping";
+//    });
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("CanRead", policy => policy.RequireClaim("scope", "catalogapi.read"));
+//});
 
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 app.UseRouting();
+app.UseCors("Local");
 app.UseEndpoints(endpoints => endpoints.MapControllers());
 await app.UseOcelot();
 
