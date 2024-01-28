@@ -1,4 +1,11 @@
 <app-navbar></app-navbar>
 <div class="container" style="margin-top: 150px;">
   <h1>Welcome to IFShopping</h1>
+  <ul>
+    @for(product of products(); track $index){
+      <li> {{product.name}} </li>
+    }@empty {
+      <li>No products were find</li>
+    }
+  </ul>
 </div>

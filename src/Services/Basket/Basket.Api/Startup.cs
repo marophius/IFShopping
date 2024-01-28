@@ -49,12 +49,12 @@ namespace Basket.Api
                 .RequireAuthenticatedUser()
                 .Build();
             services.AddControllers(config => config.Filters.Add(new AuthorizeFilter(userPolicy)));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = "https://localhost:9009";
-                    options.Audience = "Basket";
-                });
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.Authority = "https://localhost:9009";
+            //        options.Audience = "Basket";
+            //    });
             
         }
 
@@ -67,7 +67,7 @@ namespace Basket.Api
                 app.UseDeveloperExceptionPage();
             }
             app.UseHttpsRedirection();
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

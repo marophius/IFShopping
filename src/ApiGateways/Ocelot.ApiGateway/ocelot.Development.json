@@ -109,10 +109,10 @@
         }
       ],
       "UpstreamPathTemplate": "/Basket/CreateBasket",
-      "UpstreamHttpMethod": [ "POST" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IFShoppingGatewayAuthScheme"
-      }
+      "UpstreamHttpMethod": [ "POST" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "IFShoppingGatewayAuthScheme"
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/v1/Basket/Checkout",

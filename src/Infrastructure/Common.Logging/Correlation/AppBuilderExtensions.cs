@@ -9,6 +9,10 @@ namespace Common.Logging.Correlation
 {
     public static class AppBuilderExtensions
     {
-        public static WebApplication AddCorrelationMiddleware(this WebApplication app) => (WebApplication)app.UseMiddleware<CorrelationIdMiddleware>();
+        public static WebApplication AddCorrelationMiddleware(this WebApplication app)
+        {
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            return app;
+        }
     }
 }

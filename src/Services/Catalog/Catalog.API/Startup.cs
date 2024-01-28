@@ -1,5 +1,6 @@
 ﻿using Catalog.Application;
 using Catalog.Infrastructure;
+using Common.Logging.Correlation;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -31,27 +32,28 @@ namespace Catalog.API
                     Version = "v1",
                 });
             });
+            services.AddScoped<ICorrelationIdGenerator, CorrelationIdGenerator>();
             services.AddInfrastructure();
             services.AddApplication();
             services.AddApiVersioning();
             services.AddHealthChecks()
                 .AddMongoDb(Configuration["DatabaseSettings:ConnectionString"], "Catalog MongoDb HealthCheck", HealthStatus.Degraded);
 
-            var userPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-            services.AddControllers(config => config.Filters.Add(new AuthorizeFilter(userPolicy)));
+            //var userPolicy = new AuthorizationPolicyBuilder()
+            //    .RequireAuthenticatedUser()
+            //    .Build();
+            services.AddControllers();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = "https://localhost:9009";
-                    options.Audience = "Catalog";
-                });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("CanRead", policy => policy.RequireClaim("scope", "catalogapi.read"));
-            });
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.Authority = "https://localhost:9009";
+            //        options.Audience = "Catalog";
+            //    });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("CanRead", policy => policy.RequireClaim("scope", "catalogapi.read"));
+            //});
             
         }
 

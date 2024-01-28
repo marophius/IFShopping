@@ -6,8 +6,8 @@ using Catalog.Core.Specs;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using Common.Logging;
-//using Common.Logging.Correlation;
+using Common.Logging;
+using Common.Logging.Correlation;
 using System.Net;
 
 namespace Catalog.API.Controllers
@@ -16,18 +16,18 @@ namespace Catalog.API.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<CatalogController> _logger;
-        //private readonly ICorrelationIdGenerator _correlationIdGenerator;
+        private readonly ICorrelationIdGenerator _correlationIdGenerator;
 
         public CatalogController(
             IMediator mediator, 
-            ILogger<CatalogController> logger
-            //ICorrelationIdGenerator correlationIdGenerator
+            ILogger<CatalogController> logger,
+            ICorrelationIdGenerator correlationIdGenerator
             )
         {
             _mediator = mediator;
             _logger = logger;
-            //_correlationIdGenerator = correlationIdGenerator;
-            //_logger.LogInformation("CorrelationId {correlationId}:", _correlationIdGenerator.Get());
+            _correlationIdGenerator = correlationIdGenerator;
+            _logger.LogInformation("CorrelationId {correlationId}:", _correlationIdGenerator.Get());
         }
 
         [HttpGet("[action]/{id}", Name = "GetProductById")]
@@ -50,8 +50,8 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet("GetAllProducts")]
-        [ProducesResponseType(typeof(IList<ProductResponse>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IList<ProductResponse>>> GetAllProducts([FromQuery] CatalogSpecParams catalogSpecParams)
+        [ProducesResponseType(typeof(Pagination<ProductResponse>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Pagination<ProductResponse>>> GetAllProducts([FromQuery] CatalogSpecParams catalogSpecParams)
         {
             try
             {
