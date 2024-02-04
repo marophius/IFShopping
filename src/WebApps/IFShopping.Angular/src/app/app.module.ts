@@ -6,12 +6,15 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { StoreModule } from './store/store.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeComponent } from './home/home.component';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +25,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     StoreModule,
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideHttpClient(withFetch(), withInterceptors([errorInterceptor]))
   ],
   bootstrap: [AppComponent]
 })

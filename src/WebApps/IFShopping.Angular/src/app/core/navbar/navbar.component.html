@@ -2,13 +2,13 @@
     class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
     <div class="d-flex align-center">
         <!-- <img src="/assets/images/logo.png" style="max-height: 70px;" alt="myview" class="logo" routerLink="/" /> -->
-        <a href="" class="logo" style="max-height: 70px;">IFShopping</a>
+        <a href="" class="logo" style="max-height: 70px;" routerLink="/">IFShopping</a>
         <h5 class="my-0 ml-md-2 font-weight-normal"></h5>
     </div>
 
     <nav class="my-2 my-md-0 mr-md-3 text-uppercase" style="font-size: larger;">
-        <a class="p-2">Home</a>
-        <a class="p-2">Store</a>
+        <a class="p-2" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a class="p-2" routerLink="store" routerLinkActive="active">Store</a>
         <a class="p-2" target="_blank" href="https://github.com/marophius/IFShopping">GitHub</a>
 
     </nav>

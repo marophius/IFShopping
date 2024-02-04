@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IProduct } from '../shared/models/product';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IPagination } from '../shared/models/pagination';
 import { IBrand } from '../shared/models/brand';
 import { IType } from '../shared/models/type';
@@ -15,6 +15,10 @@ export class StoreService {
   private readonly baseURL:string = 'http://localhost:9010/';
 
   constructor(private http: HttpClient) { }
+
+  getProductById(id: string): Observable<IProduct> {
+    return this.http.get<IProduct>(this.baseURL + 'Catalog/GetProductById/' + id);
+  }
 
   getProducts(storeParams: StoreParams) {
     let params = new HttpParams();
