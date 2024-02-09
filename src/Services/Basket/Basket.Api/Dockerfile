@@ -10,6 +10,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Services/Basket/Basket.Api/Basket.Api.csproj", "src/Services/Basket/Basket.Api/"]
+COPY ["src/Infrastructure/Common.Logging/Common.Logging.csproj", "src/Infrastructure/Common.Logging/"]
 COPY ["src/Infrastructure/EventBus/EventBus.Messages/EventBus.Messages.csproj", "src/Infrastructure/EventBus/EventBus.Messages/"]
 COPY ["src/Services/Basket/Basket.Application/Basket.Application.csproj", "src/Services/Basket/Basket.Application/"]
 COPY ["src/Services/Basket/Basket.Core/Basket.Core.csproj", "src/Services/Basket/Basket.Core/"]

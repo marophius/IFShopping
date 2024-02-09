@@ -13,9 +13,9 @@ const routes: Routes = [
   {path: 'store', loadChildren:() => import('./store/store.module').then(mod => mod.StoreModule), data:{breadcrumb:'Store'}},
   // { path: 'signin-callback', component: SigninRedirectCallbackComponent },
   // { path: 'signout-callback', component: SignoutRedirectCallbackComponent },
-  // {path: 'basket', loadChildren:()=>import('./basket/basket.module').then(mod=>mod.BasketModule), data:{breadcrumb:'Basket'}},
+  {path: 'basket', loadChildren:() => import('./basket/basket.module').then(mod => mod.BasketModule), data:{breadcrumb:'Basket'}},
   // {path: 'checkout', canActivate:[AuthGuard], loadChildren:()=>import('./checkout/checkout.module').then(mod=>mod.CheckoutModule), data:{breadcrumb:'Checkout'}},
-  // {path: 'account', loadChildren:()=>import('./account/account.module').then(mod=>mod.AccountModule), data:{breadcrumb:{skip:true}}},
+  {path: 'account', loadChildren:() => import('./account/account.module').then(mod => mod.AccountModule), data:{breadcrumb:{skip:true}}},
   {path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 

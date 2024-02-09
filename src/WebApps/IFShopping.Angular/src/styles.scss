@@ -1,2 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Honk&family=Open+Sans:wght@300;400;700&display=swap');
+
+.xng-breadcrumb-root {
+    padding: 8px 16px;
+    display: inline;
+    border-radius: 0;
+  }
+  
+  label.xng-breadcrumb-trail {
+    margin-bottom: 0;
+    color: blue;
+  }
+  
+  .xng-breadcrumb-separator {
+    padding: 0 0;
+  }

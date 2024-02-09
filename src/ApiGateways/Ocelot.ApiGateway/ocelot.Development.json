@@ -101,11 +101,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/Basket/CreateBasket",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "basket.api",
-          "Port": "8081"
+          "Port": "8080"
         }
       ],
       "UpstreamPathTemplate": "/Basket/CreateBasket",

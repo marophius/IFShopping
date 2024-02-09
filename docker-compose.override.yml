@@ -69,7 +69,6 @@ services:
       - "ElasticConfiguration:Uri=http://elasticsearch:9200"
     depends_on:
       - catalogdb
-      - elasticsearch 
     ports:
       - "9000:8080"
 
@@ -84,7 +83,7 @@ services:
       - "ElasticConfiguration:Uri=http://elasticsearch:9200" 
     depends_on:
       - basketdb
-      - elasticsearch 
+      - rabbitmq
     ports:
       - "9001:8080"
 
@@ -100,7 +99,6 @@ services:
       - "9002:8080"
     depends_on: 
       - discountdb
-      - elasticsearch 
 
   ordering.api:
     container_name: ordering.api
@@ -115,7 +113,6 @@ services:
     depends_on:
       - orderdb
       - rabbitmq
-      - elasticsearch
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

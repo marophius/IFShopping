@@ -14,6 +14,17 @@ builder.Logging.AddDebug();
 builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 builder.Services.AddOcelot(builder.Configuration)
     .AddCacheManager(settings => settings.WithDictionaryHandle());
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            // .AddJwtBearer(authScheme, options =>
+            // {
+            //     options.Authority = "https://localhost:9009";
+            //     options.Audience = "EShoppingGateway";
+            // });
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "https://localhost:9009";
+                options.Audience = "IFShoppingGateway";
+            });
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Local", policy =>

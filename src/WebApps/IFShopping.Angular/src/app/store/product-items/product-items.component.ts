@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IProduct } from '../../shared/models/product';
 
 @Component({
@@ -9,7 +9,9 @@ import { IProduct } from '../../shared/models/product';
 })
 export class ProductItemsComponent {
 
-  @Input() product!: IProduct
+  @Input() product!: IProduct;
+  @Output('onAddItemToBasket')
+  public eventEmmiter: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 
   constructor() {
     
@@ -17,6 +19,6 @@ export class ProductItemsComponent {
   }
 
   addItemToBasket() {
-
+    this.eventEmmiter.emit(this.product);
   }
 }

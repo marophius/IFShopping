@@ -38,6 +38,7 @@
             ],
             "styles": [
               "./node_modules/font-awesome/css/font-awesome.min.css",
+              "./node_modules/ngx-spinner/animations/ball-pulse-sync.css",
               "src/styles.scss"
             ],
             "scripts": [],

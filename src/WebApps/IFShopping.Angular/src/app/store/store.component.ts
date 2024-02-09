@@ -1,17 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
 import { StoreService } from './store.service';
 import { IProduct } from '../shared/models/product';
 import { IBrand } from '../shared/models/brand';
 import { IType } from '../shared/models/type';
 import { StoreParams } from '../shared/models/storeParams';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { BasketService } from '../basket/basket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-store',
   templateUrl: './store.component.html',
   styleUrl: './store.component.scss'
 })
-export class StoreComponent implements OnInit {
+export class StoreComponent implements OnInit, OnDestroy {
 
   public products: WritableSignal<IProduct[]> = signal<IProduct[]>([]);
   public brands: WritableSignal<IBrand[]> = signal<IBrand[]>([]);
@@ -25,8 +27,11 @@ export class StoreComponent implements OnInit {
   public totalCount: number = 0;
   @ViewChild('search', {static: false})
   public searchTerm!: ElementRef<HTMLInputElement>;
+  public subscription!: Subscription;
 
-  constructor(private storeService: StoreService) {
+  constructor(
+    private storeService: StoreService,
+    private basketService: BasketService) {
     
   }
 
@@ -99,5 +104,13 @@ export class StoreComponent implements OnInit {
       this.storeParams = new StoreParams();
       this.getBrands();
     }
+  }
+
+  addItemToBasket(item: IProduct) {
+    this.subscription = this.basketService.addItemToBasket(item)
+  }
+
+  ngOnDestroy(): void {
+      this.subscription?.unsubscribe();
   }
 }

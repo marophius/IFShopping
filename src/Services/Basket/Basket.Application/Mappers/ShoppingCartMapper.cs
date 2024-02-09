@@ -12,6 +12,11 @@ namespace Basket.Application.Mappers
     {
         public static ShoppingCartResponse ToShoppingCartResponse(this ShoppingCart cart)
         {
+            if (cart.Items is null)
+                return new ShoppingCartResponse
+                {
+                    UserName = cart.UserName
+                };
             return new ShoppingCartResponse
             {
                 UserName = cart.UserName,

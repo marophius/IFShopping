@@ -70,7 +70,7 @@
       <div class="row row-cols-3 g-3">
         @for (item of products(); track $index) {
         <div class="col">
-          <app-product-items [product]="item"></app-product-items>
+          <app-product-items [product]="item" (onAddItemToBasket)="addItemToBasket($event)"></app-product-items>
         </div>
         }
         @empty {
